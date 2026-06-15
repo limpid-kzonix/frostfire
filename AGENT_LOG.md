@@ -65,3 +65,10 @@
 2026-06-15T22:06:05Z iteration 2 progress: hardened authorization header parsing to trim whitespace and accept case-insensitive 'Bearer' prefix; added guard for empty extracted tokens.
 2026-06-15T22:06:05Z iteration 2 completed: host validation via ./test/run_host_tests.sh passed.
 2026-06-15T22:06:05Z iteration 2 validation blocker remains: PlatformIO CLI unavailable (`pio` missing, no `platformio` module).
+2026-06-15T22:06:09Z iteration 2 committed checkpoint
+2026-06-15T22:06:09Z iteration 2 completed validation_status=0
+2026-06-15T22:06:09Z iteration 3 started remaining=17853s
+2026-06-16T01:08:00+03:00 iteration 3 progress: hardened RelayController runtime safety by revalidating relay pin at startup, forcing default on unsafe pin, and forcing relay OFF when an inconsistent active state is observed in tick().
+2026-06-16T01:08:00+03:00 iteration 3 completed: host validation passed via ./test/run_host_tests.sh; `pio run` attempted and still blocked (`pio` command not found).
+2026-06-16T01:08:00+03:00 iteration 3 committed checkpoint
+2026-06-16T01:08:00+03:00 iteration 3 completed validation_status=0

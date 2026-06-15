@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #include "Logger.hpp"
+#include "ConfigPolicy.hpp"
 #include "RelayController.hpp"
 #include "PulsePolicy.hpp"
 
@@ -17,7 +18,14 @@ RelayController::RelayController(const AppConfig &config)
 void RelayController::begin()
 {
   _pin = _config.relayPin();
+  if (!ConfigPolicy::isValidRelayPin(_pin))
+  {
+    logger.error("invalid relay pin " + String(_pin) + ", using default");
+    _pin = ConfigPolicy::kDefaultRelayPin;
+  }
+
   pinMode(_pin, OUTPUT);
+  digitalWrite(_pin, LOW);
 
   bool relayActiveLow = _config.relayActiveLow();
   const uint8_t offLevel = relayActiveLow ? HIGH : LOW;
@@ -33,6 +41,11 @@ void RelayController::tick()
 {
   if (!_isBusy)
   {
+    if (_isActive)
+    {
+      logger.warn("inconsistent relay active state detected, forcing off");
+      forceOff();
+    }
     return;
   }
 
