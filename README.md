@@ -103,7 +103,8 @@ The UI shows live status and includes a dedicated button:
 
 ```bash
 curl http://<ip>/api/v1/health
-curl http://<ip>/api/v1/status
+curl http://<ip>/api/v1/status \
+  -H 'Authorization: Bearer <token>'
 curl -X POST http://<ip>/api/v1/power/pulse \
   -H 'Authorization: Bearer <token>' \
   -H 'Content-Type: application/json' \

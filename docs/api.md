@@ -53,6 +53,8 @@ Response example:
 
 ### `GET /api/v1/status`
 
+This endpoint currently requires authentication when API auth is enabled.
+
 Returns relay and limit state.
 
 Response example:

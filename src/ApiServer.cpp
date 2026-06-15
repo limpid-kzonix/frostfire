@@ -236,14 +236,25 @@ void ApiServer::handleRoot()
     };
 
     async function refreshState() {
+      const token = tokenInput.value.trim();
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : null;
+
       try {
+        const statusPromise = headers
+          ? fetch('/api/v1/status', { headers })
+          : fetch('/api/v1/status');
+
         const [statusResp, healthResp] = await Promise.all([
-          fetch('/api/v1/status'),
+          statusPromise,
           fetch('/api/v1/health'),
         ]);
 
         if (!statusResp.ok || !healthResp.ok) {
-          messageEl.textContent = 'Unable to read device status.';
+          if (statusResp.status === 401) {
+            messageEl.textContent = 'Status read requires token. Enter token to enable status/pulse.';
+          } else {
+            messageEl.textContent = 'Unable to read device status.';
+          }
           messageEl.className = 'warn';
           return;
         }
