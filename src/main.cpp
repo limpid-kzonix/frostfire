@@ -1,15 +1,35 @@
+#include "ApiServer.hpp"
+#include "BuildInfo.hpp"
+#include "Logger.hpp"
+#include "RelayController.hpp"
+#include "WifiService.hpp"
 #include <Arduino.h>
 
-#define RELAY_PIN D0
+AppConfig config;
+RelayController relay(config);
+WifiService wifi(config);
+ApiServer api(config, relay, wifi, ""); // token can be supplied via include/secrets.h
 
 void setup()
 {
-  Serial.begin(115200);
-  pinMode(RELAY_PIN, OUTPUT);
-  digitalWrite(RELAY_PIN, LOW); // Ensure relay is off initially
+  logger.begin(115200);
+  logger.info("starting frostfire firmware");
+  logger.info(String(getFirmwareName()) + " " + String(getFirmwareVersion()));
+
+  if (!config.load())
+  {
+    logger.warn("configuration invalid, using defaults");
+  }
+  relay.begin();
+  wifi.begin();
+  api.begin();
+
+  logger.info("system initialized");
 }
 
 void loop()
 {
-  
+  relay.tick();
+  wifi.tick();
+  api.tick();
 }

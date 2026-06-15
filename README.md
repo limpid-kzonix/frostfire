@@ -1,53 +1,107 @@
 # Frostfire
 
-Frostfire is an ESP32-based project that allows you to remotely control the power switch of your PC via a relay module. The goal is to provide an easy way to power on and off your PC from a distance, offering convenience for setups where the PC is not easily accessible.
+Frostfire is ESP32 firmware that safely emulates a PC motherboard power-button press via a relay.
 
-# Features
+## Safety model
 
-- Remote PC Power Control: Turn your PC on or off remotely.
-- ESP32 with Arduino Framework: Built using the ESP32 microcontroller, programmed with the Arduino framework.
-- Relay Module Control: Uses a relay to physically switch the PC's power pins.
-- Wi-Fi Connectivity: Control your PC power through Wi-Fi from any device.
+- Commands are bounded pulses only: the relay turns on for a fixed duration and then returns off.
+- Relay defaults to OFF during boot/restart and after every pulse.
+- Mutating API endpoints require token auth.
+- This is for trusted local networks only.
 
-# Components
-
-- ESP32: The main microcontroller responsible for managing the power signals.
-- Relay Module: Used to switch the power button pins of your PC.
-- Jumper wires: To connect the ESP32 to the relay.
-- Power Supply: Ensure that the ESP32 is powered either via USB or external supply.
-
-# Setup
 ## Hardware
-- Connect the relay module to the ESP32.
-- VCC of relay to 3.3V of ESP32.
-- GND of relay to GND of ESP32.
-- IN1 of relay to a digital pin (e.g., D5) of ESP32.
 
-Connect the relay to your PC’s power button pins on the motherboard.
-- Power the ESP32 via USB or an external 5V power supply.
+- ESP32 development board
+- Single-channel relay module
+- One GPIO to relay input
+- Relay common/NO contacts across PC power-button header
 
-## Software
-- Install the Arduino IDE and set up the ESP32 board.
-    - Add the ESP32 board in the Arduino IDE by following these instructions.
-    - Clone this repository:
-        ```bash
-        git clone https://github.com/yourusername/Frostfire.git
-        ```
+## Wiring
 
-    - Open Frostfire.ino in the Arduino IDE and configure your Wi-Fi credentials in the code.
-    - Upload the code to your ESP32.
+See [`docs/wiring.md`](docs/wiring.md).
 
-# Usage
--  Ensure that the ESP32 is powered and connected to your Wi-Fi network.
-- Use a web interface, mobile app, or custom script to send commands to the ESP32 to toggle the relay and control your PC power.
-- Your PC can now be turned on or off remotely!
+## Repository layout
 
-# Future Enhancements
+- `include/` firmware headers
+- `src/` firmware sources
+- `test/` firmware tests (planned)
+- `docs/` API/safety/wiring docs
 
-- Integration with smart home systems (Home Assistant, etc.)
-- Mobile app for easier control.
-- Advanced scheduling for automatic power control.
+## Setup
 
-# License
+1. Install PlatformIO and clone this repository.
+2. Create credentials:
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+cp include/secrets.example.h include/secrets.h
+```
+
+3. Edit `include/secrets.h`.
+4. Build:
+
+```bash
+pio run
+```
+
+5. Upload:
+
+```bash
+pio run -t upload
+```
+
+6. Monitor:
+
+```bash
+pio device monitor
+```
+
+## Configuration
+
+Runtime configuration is stored in ESP32 `Preferences`.
+Defaults:
+
+- `deviceName = frostfire`
+- `relayPin = 5`
+- `relayActiveLow = true`
+- `defaultPulseMs = 500`
+- `minPulseMs = 100`
+- `maxPulseMs = 3000`
+- `apiEnabled = true`
+- `otaEnabled = false`
+
+See API for runtime updates.
+
+## API
+
+See [`docs/api.md`](docs/api.md).
+
+## Useful API calls
+
+```bash
+curl http://<ip>/api/v1/health
+curl http://<ip>/api/v1/status
+curl -X POST http://<ip>/api/v1/power/pulse \
+  -H 'Authorization: Bearer <token>' \
+  -H 'Content-Type: application/json' \
+  -d '{"durationMs":500}'
+```
+
+## Validation checklist
+
+- `pio run`
+- Power cycles leave relay OFF
+- `POST /api/v1/power/pulse` returns 202 and relay deactivates after configured duration
+- Invalid duration returns 400
+- Busy pulse returns 409
+- Unauthorized control returns 401
+
+## Security
+
+- Never commit real secrets; only `include/secrets.example.h` is versioned.
+- Do not expose API over public networks.
+- Prefer VPN access for remote use.
+- For lab-only local builds only, you can disable auth by defining `FROSTFIRE_AUTH_DISABLED`.
+
+## License
+
+MIT.
