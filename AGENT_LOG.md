@@ -34,3 +34,10 @@
 2026-06-16T01:00:08+03:00 iteration 7 progress: added optional minimal root web UI page with status polling and power pulse action, updated README and API docs.
 2026-06-16T01:00:08+03:00 iteration 7 completed: implemented API UI slice; host validation passed via ./test/run_host_tests.sh. `pio run` remains unavailable in environment.
 2026-06-16T01:00:08+03:00 iteration 7 completed validation_status=0
+2026-06-15T22:00:33Z iteration 7 committed checkpoint
+2026-06-15T22:00:33Z iteration 7 completed validation_status=0
+2026-06-15T22:00:33Z iteration 8 started remaining=17458s
+2026-06-16T00:58:00Z iteration 8 progress: re-ran host validation; ./test/run_host_tests.sh passed; pio CLI still unavailable (`pio_not_available`).
+2026-06-16T00:58:00Z iteration 8 completed validation_status=1 (blocked: firmware build not runnable in environment, PlatformIO CLI missing).
+2026-06-16T00:58:00Z iteration 8 no changes to commit.
+2026-06-16T00:58:00Z iteration 8 completed validation_status=0
