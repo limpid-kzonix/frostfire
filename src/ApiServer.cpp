@@ -17,6 +17,8 @@ void ApiServer::begin()
     return;
   }
 
+  _server.on("/", HTTP_GET, [this]()
+             { handleRoot(); });
   _server.on("/api/v1/health", HTTP_GET, [this]()
              { handleHealth(); });
   _server.on("/api/v1/status", HTTP_GET, [this]()
@@ -95,6 +97,222 @@ void ApiServer::handleHealth()
   doc["heapFree"] = ESP.getFreeHeap();
 
   sendJson(200, doc);
+}
+
+void ApiServer::handleRoot()
+{
+  static const char page[] = R"rawliteral(
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frostfire</title>
+  <style>
+    :root {
+      --bg: radial-gradient(130% 140% at 15% 10%, #0f172a 0%, #020617 45%, #0b1022 100%);
+      --panel: rgba(255, 255, 255, 0.06);
+      --panel-border: rgba(255, 255, 255, 0.2);
+      --text: #e5f2ff;
+      --accent: #5eead4;
+      --accent-2: #60a5fa;
+      --danger: #fb7185;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; font-family: "Trebuchet MS", "Fira Sans", "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100%; }
+    body { display: flex; justify-content: center; align-items: center; padding: 24px; }
+    .card {
+      width: min(920px, 100%);
+      background: linear-gradient(140deg, var(--panel), rgba(8, 16, 36, 0.75));
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+    }
+    h1 { margin-top: 0; font-size: 1.7rem; letter-spacing: 0.02em; }
+    p { color: #bdd4f4; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+    label { display: block; margin-bottom: 6px; color: #b7d0f9; font-size: 0.95rem; }
+    input {
+      width: 120px;
+      border-radius: 8px;
+      border: 1px solid #273a66;
+      background: rgba(4, 12, 26, 0.8);
+      color: #eef4ff;
+      padding: 10px;
+    }
+    input#tokenInput { width: 300px; }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #021025;
+      background: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+    button:hover { transform: translateY(-1px); opacity: 0.95; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #message { margin-top: 12px; min-height: 24px; color: var(--accent-2); }
+    .status { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+    .panel {
+      background: rgba(2, 13, 33, 0.6);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .label { color: #b9caee; font-size: 0.9rem; margin-bottom: 6px; }
+    .value { font-size: 1.2rem; color: #e7f1ff; }
+    .warn { color: var(--danger); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Frostfire Relay Control</h1>
+    <p>Pulse control is bounded and defaults to a short relay window.</p>
+    <div class="row">
+      <div>
+        <label for="tokenInput">Bearer token</label>
+        <input id="tokenInput" placeholder="Set token for control actions" />
+      </div>
+      <div>
+        <label for="durationInput">Duration (ms)</label>
+        <input id="durationInput" type="number" min="100" max="3000" step="50" value="500" />
+      </div>
+      <button id="pulseBtn">Pulse PC Power Button</button>
+    </div>
+    <div id="message"></div>
+    <div class="status">
+      <div class="panel">
+        <div class="label">Device</div>
+        <div id="deviceName" class="value">--</div>
+      </div>
+      <div class="panel">
+        <div class="label">Wi-Fi</div>
+        <div id="wifiIp" class="value">--</div>
+      </div>
+      <div class="panel">
+        <div class="label">Relay</div>
+        <div id="relayState" class="value">--</div>
+      </div>
+      <div class="panel">
+        <div class="label">Firmware</div>
+        <div id="fwVersion" class="value">--</div>
+      </div>
+      <div class="panel">
+        <div class="label">Limits</div>
+        <div id="limits" class="value">--</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const messageEl = document.getElementById('message');
+    const tokenInput = document.getElementById('tokenInput');
+    const durationInput = document.getElementById('durationInput');
+    const pulseBtn = document.getElementById('pulseBtn');
+    const relayState = document.getElementById('relayState');
+    const deviceName = document.getElementById('deviceName');
+    const wifiIp = document.getElementById('wifiIp');
+    const fwVersion = document.getElementById('fwVersion');
+    const limits = document.getElementById('limits');
+
+    const toText = (value) => (value === undefined || value === null || value === '' ? '--' : value);
+    const parseNumber = (value, fallback) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const authHeaders = () => {
+      const token = tokenInput.value.trim();
+      const headers = { 'Content-Type': 'application/json' };
+      if (!token) {
+        return null;
+      }
+      headers.Authorization = `Bearer ${token}`;
+      return headers;
+    };
+
+    async function refreshState() {
+      try {
+        const [statusResp, healthResp] = await Promise.all([
+          fetch('/api/v1/status'),
+          fetch('/api/v1/health'),
+        ]);
+
+        if (!statusResp.ok || !healthResp.ok) {
+          messageEl.textContent = 'Unable to read device status.';
+          messageEl.className = 'warn';
+          return;
+        }
+
+        const status = await statusResp.json();
+        const health = await healthResp.json();
+
+        deviceName.textContent = toText(status.deviceName);
+        relayState.textContent = status.relay && status.relay.active ? 'BUSY' : 'IDLE';
+        wifiIp.textContent = `${health.wifi && health.wifi.connected ? 'online' : 'offline'} (${toText(health.wifi ? health.wifi.ip : '0.0.0.0')})`;
+        fwVersion.textContent = `${toText(health.device)} / ${toText(health.version)}`;
+
+        const minPulse = toText(status.limits ? status.limits.minPulseMs : '--');
+        const maxPulse = toText(status.limits ? status.limits.maxPulseMs : '--');
+        const defaultPulse = toText(status.limits ? status.limits.defaultPulseMs : '--');
+        limits.textContent = `${minPulse} - ${maxPulse}ms (default ${defaultPulse}ms)`;
+
+        const relayBusy = status.relay && status.relay.active;
+        pulseBtn.disabled = relayBusy;
+        pulseBtn.textContent = relayBusy ? 'Relay Busy' : 'Pulse PC Power Button';
+      } catch (error) {
+        messageEl.textContent = `Status refresh failed: ${error.message}`;
+        messageEl.className = 'warn';
+      }
+    }
+
+    async function triggerPulse() {
+      const headers = authHeaders();
+      if (!headers) {
+        messageEl.textContent = 'Provide a token for pulse action.';
+        messageEl.className = 'warn';
+        return;
+      }
+
+      const durationMs = Math.max(100, parseNumber(durationInput.value, 500));
+      const payload = { durationMs };
+      try {
+        const resp = await fetch('/api/v1/power/pulse', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          const err = data && data.error ? data.error.message : `request failed (${resp.status})`;
+          messageEl.textContent = err;
+          messageEl.className = 'warn';
+          return;
+        }
+        messageEl.textContent = `Pulse accepted for ${toText(data.durationMs)}ms.`;
+        messageEl.className = '';
+      } catch (error) {
+        messageEl.textContent = `Pulse request failed: ${error.message}`;
+        messageEl.className = 'warn';
+      }
+      finally {
+        refreshState();
+      }
+    }
+
+    pulseBtn.addEventListener('click', triggerPulse);
+    refreshState();
+    setInterval(refreshState, 3000);
+  </script>
+</body>
+</html>
+)rawliteral";
+
+  _server.send(200, "text/html", page);
 }
 
 void ApiServer::handleStatus()

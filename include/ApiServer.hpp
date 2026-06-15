@@ -24,6 +24,7 @@ private:
   void handleConfigGet();
   void handleConfigPost();
   void handleReboot();
+  void handleRoot();
   bool parseDurationFromBody(uint32_t &durationMs, String &errorCode, String &errorMessage);
   void sendNotFound();
   void sendJson(int statusCode, const JsonDocument &document);

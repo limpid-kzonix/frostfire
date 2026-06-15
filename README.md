@@ -75,6 +75,18 @@ See API for runtime updates.
 
 See [`docs/api.md`](docs/api.md).
 
+## Optional web UI
+
+Open the device root URL in your browser once connected to Wi-Fi:
+
+```bash
+http://<ip>/
+```
+
+The UI shows live status and includes a dedicated button:
+
+- **Pulse PC Power Button**
+
 ## Useful API calls
 
 ```bash
@@ -151,6 +163,7 @@ Host test (current environment):
 - Do not expose API over public networks.
 - Prefer VPN access for remote use.
 - For lab-only local builds only, you can disable auth by defining `FROSTFIRE_AUTH_DISABLED`.
+- You can open `http://<ip>/` to use the built-in control page and enter a token before pressing the button.
 
 ## License
 

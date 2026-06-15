@@ -2,6 +2,8 @@
 
 All endpoints are under `/api/v1`.
 
+The firmware also serves a minimal control page at `/` that calls `/api/v1/status` and `/api/v1/power/pulse`.
+
 ## Authentication
 
 Mutating endpoints require:
