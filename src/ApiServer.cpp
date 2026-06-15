@@ -470,7 +470,8 @@ void ApiServer::sendNotFound()
 
 bool ApiServer::parseDurationFromBody(uint32_t &durationMs, String &errorCode, String &errorMessage)
 {
-  const String body = _server.arg("plain");
+  String body = _server.arg("plain");
+  body.trim();
   if (body.isEmpty())
   {
     durationMs = _config.defaultPulseMs();

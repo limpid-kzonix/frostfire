@@ -41,3 +41,9 @@
 2026-06-16T00:58:00Z iteration 8 completed validation_status=1 (blocked: firmware build not runnable in environment, PlatformIO CLI missing).
 2026-06-16T00:58:00Z iteration 8 no changes to commit.
 2026-06-16T00:58:00Z iteration 8 completed validation_status=0
+2026-06-15T22:01:17Z iteration 8 committed checkpoint
+2026-06-15T22:01:17Z iteration 8 completed validation_status=0
+2026-06-15T22:01:17Z iteration 9 started remaining=17414s
+2026-06-16T01:01:58+03:00 iteration 9 progress: hardened /api/v1/power/pulse request body parsing by trimming whitespace, so blank/whitespace payloads now use configured default duration.
+2026-06-16T01:01:58+03:00 iteration 9 completed validation_status=1 (blocked: firmware build not runnable in environment, PlatformIO CLI missing).
+2026-06-16T01:01:58+03:00 iteration 9 completed: host validation passed via ./test/run_host_tests.sh; `pio run` unavailable (`pio` missing).
