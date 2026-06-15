@@ -71,6 +71,18 @@ Defaults:
 
 See API for runtime updates.
 
+### Optional OTA update support
+
+OTA updates are available as an optional build-time feature:
+
+- build with `FROSTFIRE_OTA_ENABLED`
+- set a strong `FROSTFIRE_OTA_PASSWORD`
+- set `otaEnabled: true` in firmware configuration storage (runtime API endpoint does not currently expose this field)
+
+Default build keeps OTA disabled.
+
+Do not expose OTA to untrusted networks.
+
 ## API
 
 See [`docs/api.md`](docs/api.md).
@@ -127,6 +139,7 @@ curl -X POST http://<ip>/api/v1/config \
 - Do not expose it directly to WAN, port forwarding, or public DNS names.
 - Disable auth only for local lab development and never on shared or unattended networks.
 - For remote access, use a trusted VPN layer such as Tailscale/WireGuard.
+- OTA is optional, build-time disabled by default.
 
 ## License
 

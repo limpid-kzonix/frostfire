@@ -52,3 +52,10 @@
 2026-06-15T22:02:13Z iteration 10 started remaining=17358s
 2026-06-16T01:02:52+03:00 iteration 10 progress: added relay pin safety validation and fallback. AppConfig::load now validates persisted relayPin and reverts to default when unsafe. Added ConfigPolicy::isValidRelayPin/isInvalidRelayPin and expanded host config policy tests for unsafe GPIO (34,35,6,2). Updated wiring docs to note invalid persisted pins fallback to default.
 2026-06-16T01:02:52+03:00 iteration 10 completed: run_host_tests.sh passed; `pio run` blocked (pio missing in environment).
+2026-06-15T22:03:01Z iteration 10 no changes to commit
+2026-06-15T22:03:01Z iteration 10 completed validation_status=0
+2026-06-15T22:03:01Z iteration limit reached iterations=10
+2026-06-15T22:03:41Z agent loop started provider=codex budget=18000s iterations=10 dangerous=True
+2026-06-15T22:03:41Z iteration 1 started remaining=18000s
+2026-06-15T22:05:02Z iteration 1 progress: added optional OTA service module (build-time gated by FROSTFIRE_OTA_ENABLED with FROSTFIRE_OTA_PASSWORD), wired into main loop, added OTA-related configuration/notes in docs and examples.
+2026-06-16T01:05:02+03:00 iteration 1 completed: host validation passed via ./test/run_host_tests.sh; firmware build blocked (`pio` missing in environment).
