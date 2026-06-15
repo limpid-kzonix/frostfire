@@ -328,6 +328,11 @@ void ApiServer::handleRoot()
 
 void ApiServer::handleStatus()
 {
+  if (!requireAuth("status"))
+  {
+    return;
+  }
+
   StaticJsonDocument<384> doc;
   JsonObject relay = doc.createNestedObject("relay");
   JsonObject limits = doc.createNestedObject("limits");

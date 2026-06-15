@@ -106,3 +106,8 @@
 2026-06-15T22:11:53Z iteration 8 completed validation_status=0
 2026-06-15T22:11:53Z iteration 9 started remaining=17509s
 2026-06-16T01:12:31+03:00 iteration 9 progress: fixed control-page status polling to include optional bearer token and clarified docs when /api/v1/status is auth-protected. Host validation remains `./test/run_host_tests.sh` (pass).
+2026-06-15T22:12:39Z iteration 9 no changes to commit
+2026-06-15T22:12:39Z iteration 9 completed validation_status=0
+2026-06-15T22:12:39Z iteration 10 started remaining=17463s
+2026-06-16T01:14:06+03:00 iteration 10 progress: hardened GET /api/v1/status to require auth and aligned API docs wording that status now always requires authentication.
+2026-06-16T01:14:06+03:00 iteration 10 completed: host validation passed via ./test/run_host_tests.sh; firmware build still blocked (`pio` command not found, no PlatformIO module).
