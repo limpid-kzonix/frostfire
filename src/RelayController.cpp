@@ -25,7 +25,6 @@ void RelayController::begin()
   }
 
   pinMode(_pin, OUTPUT);
-  digitalWrite(_pin, LOW);
 
   bool relayActiveLow = _config.relayActiveLow();
   const uint8_t offLevel = relayActiveLow ? HIGH : LOW;
