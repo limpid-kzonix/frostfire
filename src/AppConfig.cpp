@@ -1,5 +1,6 @@
 #include <ArduinoJson.h>
 
+#include "ConfigPolicy.hpp"
 #include "PulsePolicy.hpp"
 
 #if __has_include("secrets.h")
@@ -8,19 +9,6 @@
 
 #include "AppConfig.hpp"
 
-namespace
-{
-constexpr const char *kDefaultDeviceName = "frostfire";
-constexpr uint8_t kDefaultRelayPin = 5;
-constexpr bool kDefaultRelayActiveLow = true;
-constexpr uint32_t kDefaultPulseMs = 500;
-constexpr uint32_t kDefaultMinPulseMs = 100;
-constexpr uint32_t kDefaultMaxPulseMs = 3000;
-constexpr bool kDefaultApiEnabled = true;
-constexpr bool kDefaultOtaEnabled = false;
-constexpr bool kDefaultStaticIpEnabled = false;
-}
-
 AppConfig::AppConfig()
 {
   loadDefaults();
@@ -28,17 +16,17 @@ AppConfig::AppConfig()
 
 void AppConfig::loadDefaults()
 {
-  _deviceName = kDefaultDeviceName;
-  _relayPin = kDefaultRelayPin;
-  _relayActiveLow = kDefaultRelayActiveLow;
-  _defaultPulseMs = kDefaultPulseMs;
-  _minPulseMs = kDefaultMinPulseMs;
-  _maxPulseMs = kDefaultMaxPulseMs;
-  _apiEnabled = kDefaultApiEnabled;
-  _otaEnabled = kDefaultOtaEnabled;
+  _deviceName = ConfigPolicy::kDefaultDeviceName;
+  _relayPin = ConfigPolicy::kDefaultRelayPin;
+  _relayActiveLow = ConfigPolicy::kDefaultRelayActiveLow;
+  _defaultPulseMs = ConfigPolicy::kDefaultPulseMs;
+  _minPulseMs = ConfigPolicy::kDefaultMinPulseMs;
+  _maxPulseMs = ConfigPolicy::kDefaultMaxPulseMs;
+  _apiEnabled = ConfigPolicy::kDefaultApiEnabled;
+  _otaEnabled = ConfigPolicy::kDefaultOtaEnabled;
   _wifiSsid = defaultWifiSsid();
   _wifiPassword = defaultWifiPassword();
-  _staticIpEnabled = kDefaultStaticIpEnabled;
+  _staticIpEnabled = ConfigPolicy::kDefaultStaticIpEnabled;
   _staticIp = "";
   _gateway = "";
   _subnet = "";

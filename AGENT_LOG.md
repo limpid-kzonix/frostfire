@@ -11,3 +11,8 @@
 2026-06-15T21:54:57Z iteration 3 started remaining=17793s
 
 2026-06-15T21:56:08Z iteration 3 completed: added pulse policy helper + host test and updated docs. Validation run: `g++ -std=c++17 -Iinclude test/test_relay_controller/test_pulse_policy.cpp -o /tmp/pulse_policy_test && /tmp/pulse_policy_test` passed. PlatformIO CLI validation still blocked (`pio` missing, no `platformio` module).
+2026-06-15T21:56:19Z iteration 3 committed checkpoint
+2026-06-15T21:56:19Z iteration 3 completed validation_status=0
+2026-06-15T21:56:19Z iteration 4 started remaining=17712s
+2026-06-15T21:57:09Z iteration 4 progress: implemented policy refactor for testability (ConfigPolicy/AuthPolicy), added host tests for config defaults and auth token policy, updated test README/README for new local checks, and ran host validation.
+2026-06-15T21:57:09Z iteration 4 completed: validation passed for host tests; `pio run` unavailable (`pio` not found, `python3 -m platformio` module missing), no firmware build executed.

@@ -133,7 +133,11 @@ From firmware perspective:
 Host test (current environment):
 
 ```bash
-g++ -std=c++17 -Iinclude test/test_relay_controller/test_pulse_policy.cpp -o /tmp/pulse_policy_test && /tmp/pulse_policy_test
+g++ -std=c++17 -Iinclude \
+  test/test_relay_controller/test_pulse_policy.cpp \
+  test/test_config/test_config_defaults.cpp \
+  test/test_auth/test_auth_policy.cpp \
+  -o /tmp/frostfire_tests && /tmp/frostfire_tests
 ```
 
 ## Validation checklist
