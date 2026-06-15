@@ -211,7 +211,13 @@ void ApiServer::handleConfigPost()
     return;
   }
 
-  _config.save();
+  if (!_config.save())
+  {
+    sendError(500, "internal_error", "failed to persist config");
+    logger.error("config save failed");
+    return;
+  }
+
   logger.info("config updated");
   if (relayActiveLowChanged)
   {

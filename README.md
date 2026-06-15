@@ -86,6 +86,50 @@ curl -X POST http://<ip>/api/v1/power/pulse \
   -d '{"durationMs":500}'
 ```
 
+### Example: check config
+
+```bash
+curl http://<ip>/api/v1/config
+```
+
+### Example: safely tune pulse duration limits
+
+```bash
+curl -X POST http://<ip>/api/v1/config \
+  -H 'Authorization: Bearer <token>' \
+  -H 'Content-Type: application/json' \
+  -d '{"defaultPulseMs":500,"minPulseMs":100,"maxPulseMs":3000}'
+```
+
+## Troubleshooting
+
+- API always returns 401: confirm your token header is `Authorization: Bearer <token>` and that `FROSTFIRE_API_TOKEN` in `include/secrets.h` is not `change-me`.
+- PC does not power on: verify relay polarity (`relayActiveLow`) matches your relay module and wiring.
+- Relay clicks but power does not toggle: check relay contact type and PC motherboard power-button header wiring (COM and NO only).
+- Wi-Fi not connecting: verify credentials in `include/secrets.h` and that the SSID is reachable by ESP32.
+- Frequent `relay_busy` responses: the relay is still in a pulse window; wait for `durationMs` to elapse before retrying.
+
+## Security limitations
+
+- This firmware intentionally defaults to local-network use.
+- Do not expose it directly to WAN, port forwarding, or public DNS names.
+- Disable auth only for local lab development and never on shared or unattended networks.
+- For remote access, use a trusted VPN layer such as Tailscale/WireGuard.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
+
+## Validation
+
+From firmware perspective:
+
+- `pio run`
+- power cycle with relay disconnected from PCB pins and verify it stays off during boot
+- call `GET /api/v1/health` and `GET /api/v1/status`
+- send a pulse request and confirm it returns to OFF after requested duration
+- verify invalid payloads and missing auth return errors as defined in [docs/api.md](docs/api.md)
+
 ## Validation checklist
 
 - `pio run`
