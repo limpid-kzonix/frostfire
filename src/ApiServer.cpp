@@ -442,6 +442,11 @@ void ApiServer::handleConfigPost()
   }
 
   logger.info("config updated");
+  logger.info(String("  config: deviceName=") + _config.deviceName() +
+              ", relayActiveLow=" + String(_config.relayActiveLow() ? "true" : "false") +
+              ", defaultPulseMs=" + String(_config.defaultPulseMs()) +
+              ", minPulseMs=" + String(_config.minPulseMs()) +
+              ", maxPulseMs=" + String(_config.maxPulseMs()));
   if (relayActiveLowChanged)
   {
     _relay.begin();
