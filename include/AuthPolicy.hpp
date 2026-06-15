@@ -9,9 +9,12 @@ constexpr const char *kDefaultTokenSentinel = "change-me";
 
 inline constexpr std::string_view kBearerPrefix = "Bearer ";
 
+inline std::string_view trimWhitespace(std::string_view value);
+
 inline bool isConfiguredTokenValid(std::string_view token)
 {
-  return !token.empty() && token != kDefaultTokenSentinel;
+  const auto trimmed = trimWhitespace(token);
+  return !trimmed.empty() && trimmed != kDefaultTokenSentinel;
 }
 
 inline std::string_view trimWhitespace(std::string_view value)
@@ -64,6 +67,6 @@ inline bool isAuthorized(std::string_view configuredToken, std::string_view auth
     return false;
   }
 
-  return provided == configuredToken;
+  return provided == trimWhitespace(configuredToken);
 }
 } // namespace AuthPolicy

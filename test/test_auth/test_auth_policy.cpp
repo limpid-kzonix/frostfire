@@ -24,6 +24,8 @@ int main()
   expect(AuthPolicy::isAuthorized("super-secret", "  Bearer   super-secret  ", false) == true, "token with extra spaces accepted");
   expect(AuthPolicy::isAuthorized("super-secret", "bearer super-secret", false) == true, "case-insensitive bearer accepted");
   expect(AuthPolicy::isAuthorized("super-secret", "", false) == false, "empty header rejected");
+  expect(AuthPolicy::isAuthorized("  super-secret  ", "Bearer super-secret", false) == true, "configured token with spaces is normalized");
+  expect(AuthPolicy::isConfiguredTokenValid("   ") == false, "whitespace token rejected");
 
   expect(AuthPolicy::isAuthorized("super-secret", "", true) == true, "auth disabled always accepts");
   expect(AuthPolicy::isAuthorized("", "", true) == true, "auth disabled always accepts when token missing");

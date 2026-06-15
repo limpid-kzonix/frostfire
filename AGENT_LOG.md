@@ -90,3 +90,9 @@
 2026-06-16T01:09:47+03:00 iteration 6 progress: added startup and config-update non-secret logging for audit and safety traceability.
 2026-06-16T01:09:47+03:00 iteration 6 completed: host validation passed (`./test/run_host_tests.sh`); firmware build blocked (`pio` command not found).
 2026-06-16T01:09:47+03:00 iteration 6 completed validation_status=0
+2026-06-15T22:09:56Z iteration 6 no changes to commit
+2026-06-15T22:09:56Z iteration 6 completed validation_status=0
+2026-06-15T22:09:56Z iteration 7 started remaining=17626s
+2026-06-16T01:10:47+03:00 iteration 7 progress: hardened auth token validation by trimming configured token before validity checks/comparison to avoid whitespace-only/leading-trailing-space edge cases; added host auth-policy test coverage for normalized configured tokens.
+2026-06-16T01:10:47+03:00 iteration 7 completed: host validation passed via ./test/run_host_tests.sh; firmware build attempt `pio run` still unavailable (`pio` command not found).
+2026-06-16T01:10:47+03:00 iteration 7 completed validation_status=1 (blocked: PlatformIO CLI unavailable in environment).
