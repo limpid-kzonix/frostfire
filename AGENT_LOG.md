@@ -6,3 +6,8 @@
 2026-06-15T21:53:48Z iteration 2 started remaining=17863s
 2026-06-16T01:10:00Z iteration 2 progress: patched config persistence error handling, added LICENSE, expanded docs, added api response/error documentation. validation requested: `pio run` not available in runtime.
 2026-06-16T01:15:00Z iteration 2 completed validation_status=1 (blocked: PlatformIO CLI unavailable (`pio` missing, no module `platformio`).
+2026-06-15T21:54:57Z iteration 2 committed checkpoint
+2026-06-15T21:54:57Z iteration 2 completed validation_status=0
+2026-06-15T21:54:57Z iteration 3 started remaining=17793s
+
+2026-06-15T21:56:08Z iteration 3 completed: added pulse policy helper + host test and updated docs. Validation run: `g++ -std=c++17 -Iinclude test/test_relay_controller/test_pulse_policy.cpp -o /tmp/pulse_policy_test && /tmp/pulse_policy_test` passed. PlatformIO CLI validation still blocked (`pio` missing, no `platformio` module).

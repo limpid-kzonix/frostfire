@@ -2,6 +2,7 @@
 
 #include "Logger.hpp"
 #include "RelayController.hpp"
+#include "PulsePolicy.hpp"
 
 RelayController::RelayController(const AppConfig &config)
     : _config(config),
@@ -93,12 +94,11 @@ void RelayController::forceOff()
 
 void RelayController::setRelayLevel(bool active)
 {
-  const bool relayActiveLow = _config.relayActiveLow();
-  const uint8_t level = (active == relayActiveLow) ? LOW : HIGH;
+  const uint8_t level = PulsePolicy::relayOutputHighForActive(active, _config.relayActiveLow()) ? HIGH : LOW;
   digitalWrite(_pin, level);
 }
 
 bool RelayController::validateDuration(uint32_t durationMs) const
 {
-  return durationMs >= _config.minPulseMs() && durationMs <= _config.maxPulseMs();
+  return PulsePolicy::isDurationWithinBounds(durationMs, _config.minPulseMs(), _config.maxPulseMs());
 }

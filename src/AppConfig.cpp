@@ -1,5 +1,7 @@
 #include <ArduinoJson.h>
 
+#include "PulsePolicy.hpp"
+
 #if __has_include("secrets.h")
 #include "secrets.h"
 #endif
@@ -135,27 +137,14 @@ bool AppConfig::save()
 
 bool AppConfig::validatePulseConfig(uint32_t defaultPulseMs, uint32_t minPulseMs, uint32_t maxPulseMs, String &errorMessage) const
 {
-  if (minPulseMs == 0)
+  const auto error = PulsePolicy::validatePulseConfig(defaultPulseMs, minPulseMs, maxPulseMs);
+  if (error == PulsePolicy::ValidationError::None)
   {
-    errorMessage = "minPulseMs must be greater than 0";
-    return false;
+    return true;
   }
-  if (maxPulseMs == 0)
-  {
-    errorMessage = "maxPulseMs must be greater than 0";
-    return false;
-  }
-  if (minPulseMs > maxPulseMs)
-  {
-    errorMessage = "minPulseMs must be <= maxPulseMs";
-    return false;
-  }
-  if (defaultPulseMs < minPulseMs || defaultPulseMs > maxPulseMs)
-  {
-    errorMessage = "defaultPulseMs must be between minPulseMs and maxPulseMs";
-    return false;
-  }
-  return true;
+
+  errorMessage = PulsePolicy::validationErrorMessage(error);
+  return false;
 }
 
 bool AppConfig::applyRuntimeUpdate(const JsonVariantConst &payload, String &errorMessage, bool &relayActiveLowChanged)
@@ -410,4 +399,3 @@ void AppConfig::setDns(const String &value)
 {
   _dns = value;
 }
-

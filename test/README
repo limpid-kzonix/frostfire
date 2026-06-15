@@ -1,11 +1,13 @@
+Host- and firmware-oriented tests live in subdirectories:
 
-This directory is intended for PlatformIO Test Runner and project tests.
+- `test_relay_controller/`: pure relay policy checks that run in native environments.
+- `test_config/`: planned (reserved for future config/Auth validation tests).
 
-Unit Testing is a software testing method by which individual units of
-source code, sets of one or more MCU program modules together with associated
-control data, usage procedures, and operating procedures, are tested to
-determine whether they are fit for use. Unit testing finds problems early
-in the development cycle.
+Run current host test:
 
-More information about PlatformIO Unit Testing:
-- https://docs.platformio.org/en/latest/advanced/unit-testing/index.html
+```bash
+g++ -std=c++17 -Iinclude test/test_relay_controller/test_pulse_policy.cpp -o /tmp/pulse_policy_test && /tmp/pulse_policy_test
+```
+
+PlatformIO test runner will be added when the full firmware test toolchain is
+provisioned in CI/dev environments.

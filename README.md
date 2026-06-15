@@ -130,6 +130,12 @@ From firmware perspective:
 - send a pulse request and confirm it returns to OFF after requested duration
 - verify invalid payloads and missing auth return errors as defined in [docs/api.md](docs/api.md)
 
+Host test (current environment):
+
+```bash
+g++ -std=c++17 -Iinclude test/test_relay_controller/test_pulse_policy.cpp -o /tmp/pulse_policy_test && /tmp/pulse_policy_test
+```
+
 ## Validation checklist
 
 - `pio run`
