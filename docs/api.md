@@ -127,6 +127,8 @@ Alias to `/api/v1/power/pulse`.
 
 Returns non-secret configuration.
 
+This endpoint is authenticated (`Authorization: Bearer <token>`).
+
 ### `POST /api/v1/config`
 
 Allowed keys:
@@ -138,6 +140,8 @@ Allowed keys:
 - `relayActiveLow` (boolean)
 
 `relayPin` cannot be changed remotely.
+
+This endpoint is authenticated.
 
 ### `POST /api/v1/reboot`
 

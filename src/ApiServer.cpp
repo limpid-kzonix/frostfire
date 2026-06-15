@@ -380,6 +380,11 @@ void ApiServer::handleRelayPulse()
 
 void ApiServer::handleConfigGet()
 {
+  if (!requireAuth("config read"))
+  {
+    return;
+  }
+
   StaticJsonDocument<256> doc;
   JsonObject relay = doc.createNestedObject("relay");
   JsonObject limits = doc.createNestedObject("limits");

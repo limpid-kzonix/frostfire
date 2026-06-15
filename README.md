@@ -113,7 +113,8 @@ curl -X POST http://<ip>/api/v1/power/pulse \
 ### Example: check config
 
 ```bash
-curl http://<ip>/api/v1/config
+curl http://<ip>/api/v1/config \
+  -H 'Authorization: Bearer <token>'
 ```
 
 ### Example: safely tune pulse duration limits

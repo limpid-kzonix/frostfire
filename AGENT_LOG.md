@@ -77,3 +77,10 @@
 2026-06-15T22:06:52Z iteration 4 started remaining=17810s
 2026-06-16T01:09:30+03:00 iteration 4 progress: fixed RelayController startup initialization to write the configured OFF level first (removed pre-pin-mode LOW write) to avoid a transient energize for active-LOW relay modules.
 2026-06-16T01:09:30+03:00 iteration 4 validation: host tests passed via ./test/run_host_tests.sh; firmware build still unavailable ( command not found).
+2026-06-15T22:07:46Z iteration 4 no changes to commit
+2026-06-15T22:07:46Z iteration 4 completed validation_status=0
+2026-06-15T22:07:46Z iteration 5 started remaining=17756s
+2026-06-15T22:08:28Z iteration 5 progress: hardening: require authentication for GET /api/v1/config and updated API/README docs to document config auth usage.
+2026-06-15T22:08:28Z iteration 5 completed: host validation via ./test/run_host_tests.sh passed.
+2026-06-15T22:08:28Z iteration 5 validation blocker remains: PlatformIO CLI unavailable (`pio` missing).
+2026-06-15T22:08:28Z iteration 5 completed validation_status=0
