@@ -50,7 +50,8 @@ String Auth::authToken() const
 
 bool Auth::isAuthorized(const String &authorizationHeader) const
 {
-  const std::string_view configuredToken = authToken().c_str();
+  const String configured = authToken();
+  const std::string_view configuredToken = configured.c_str();
   const std::string_view providedHeader = authorizationHeader.c_str();
   return AuthPolicy::isAuthorized(configuredToken, providedHeader, isAuthDisabled());
 }
