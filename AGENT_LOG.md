@@ -59,3 +59,9 @@
 2026-06-15T22:03:41Z iteration 1 started remaining=18000s
 2026-06-15T22:05:02Z iteration 1 progress: added optional OTA service module (build-time gated by FROSTFIRE_OTA_ENABLED with FROSTFIRE_OTA_PASSWORD), wired into main loop, added OTA-related configuration/notes in docs and examples.
 2026-06-16T01:05:02+03:00 iteration 1 completed: host validation passed via ./test/run_host_tests.sh; firmware build blocked (`pio` missing in environment).
+2026-06-15T22:05:15Z iteration 1 no changes to commit
+2026-06-15T22:05:15Z iteration 1 completed validation_status=0
+2026-06-15T22:05:15Z iteration 2 started remaining=17907s
+2026-06-15T22:06:05Z iteration 2 progress: hardened authorization header parsing to trim whitespace and accept case-insensitive 'Bearer' prefix; added guard for empty extracted tokens.
+2026-06-15T22:06:05Z iteration 2 completed: host validation via ./test/run_host_tests.sh passed.
+2026-06-15T22:06:05Z iteration 2 validation blocker remains: PlatformIO CLI unavailable (`pio` missing, no `platformio` module).
