@@ -103,7 +103,7 @@ bool AppConfig::load()
 
 bool AppConfig::save()
 {
-  if (!_preferences.begin(kPrefsNamespace, false))
+  if (!_preferences.begin(kPrefsNamespace, true))
   {
     return false;
   }

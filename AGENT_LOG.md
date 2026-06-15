@@ -96,3 +96,9 @@
 2026-06-16T01:10:47+03:00 iteration 7 progress: hardened auth token validation by trimming configured token before validity checks/comparison to avoid whitespace-only/leading-trailing-space edge cases; added host auth-policy test coverage for normalized configured tokens.
 2026-06-16T01:10:47+03:00 iteration 7 completed: host validation passed via ./test/run_host_tests.sh; firmware build attempt `pio run` still unavailable (`pio` command not found).
 2026-06-16T01:10:47+03:00 iteration 7 completed validation_status=1 (blocked: PlatformIO CLI unavailable in environment).
+2026-06-15T22:10:53Z iteration 7 no changes to commit
+2026-06-15T22:10:53Z iteration 7 completed validation_status=0
+2026-06-15T22:10:53Z iteration 8 started remaining=17569s
+2026-06-16T01:20:00Z iteration 8 progress: fixed AppConfig::save() to open Preferences with write mode (rw=true) so runtime config updates persist after reboot.
+2026-06-16T01:20:00Z iteration 8 completed validation_status=0: host tests passed via ./test/run_host_tests.sh; PlatformIO CLI unavailable (pio command not found).
+2026-06-16T01:20:00Z iteration 8 no changes to commit
