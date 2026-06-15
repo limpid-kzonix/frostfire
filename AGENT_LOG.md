@@ -47,3 +47,8 @@
 2026-06-16T01:01:58+03:00 iteration 9 progress: hardened /api/v1/power/pulse request body parsing by trimming whitespace, so blank/whitespace payloads now use configured default duration.
 2026-06-16T01:01:58+03:00 iteration 9 completed validation_status=1 (blocked: firmware build not runnable in environment, PlatformIO CLI missing).
 2026-06-16T01:01:58+03:00 iteration 9 completed: host validation passed via ./test/run_host_tests.sh; `pio run` unavailable (`pio` missing).
+2026-06-15T22:02:13Z iteration 9 no changes to commit
+2026-06-15T22:02:13Z iteration 9 completed validation_status=0
+2026-06-15T22:02:13Z iteration 10 started remaining=17358s
+2026-06-16T01:02:52+03:00 iteration 10 progress: added relay pin safety validation and fallback. AppConfig::load now validates persisted relayPin and reverts to default when unsafe. Added ConfigPolicy::isValidRelayPin/isInvalidRelayPin and expanded host config policy tests for unsafe GPIO (34,35,6,2). Updated wiring docs to note invalid persisted pins fallback to default.
+2026-06-16T01:02:52+03:00 iteration 10 completed: run_host_tests.sh passed; `pio run` blocked (pio missing in environment).

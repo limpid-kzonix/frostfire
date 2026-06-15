@@ -26,6 +26,11 @@ int main()
   expect(ConfigPolicy::kDefaultApiEnabled == true, "api enabled by default");
   expect(ConfigPolicy::kDefaultOtaEnabled == false, "ota disabled by default");
   expect(ConfigPolicy::kDefaultStaticIpEnabled == false, "static IP disabled by default");
+  expect(ConfigPolicy::isValidRelayPin(ConfigPolicy::kDefaultRelayPin) == true, "default relay pin is considered safe");
+  expect(ConfigPolicy::isValidRelayPin(34) == false, "input-only pin 34 is rejected");
+  expect(ConfigPolicy::isValidRelayPin(35) == false, "input-only pin 35 is rejected");
+  expect(ConfigPolicy::isValidRelayPin(6) == false, "flash-pin 6 is rejected");
+  expect(ConfigPolicy::isValidRelayPin(2) == false, "strapping pin 2 is rejected");
 
   expect(ConfigPolicy::isValidRelayPulseConfig(500, 100, 3000), "default relay pulse bounds are valid");
   expect(!ConfigPolicy::isValidRelayPulseConfig(50, 100, 3000), "invalid default pulse rejected");

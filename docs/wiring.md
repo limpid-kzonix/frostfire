@@ -5,6 +5,7 @@
 - ESP32 GPIO to relay module **IN** input.
 - ESP32 GND to relay module **GND**.
 - Relay module supply (VCC) must match relay module specification. Most 5V modules need 5V. Do not connect directly to motherboard power rails.
+- If relay control is persisted in preferences, unsafe pins (flash, strapping, and input-only pins) are ignored and replaced by default pin `5` during boot.
 - Relay contact:
   - Relay COM and NO across the PC motherboard power button header.
   - Do **not** connect relay output to mains voltage.

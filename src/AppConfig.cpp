@@ -77,6 +77,11 @@ bool AppConfig::load()
   _dns = _preferences.getString("dns", _dns);
   _preferences.end();
 
+  if (!ConfigPolicy::isValidRelayPin(_relayPin))
+  {
+    _relayPin = ConfigPolicy::kDefaultRelayPin;
+  }
+
   if (_wifiPassword.isEmpty())
   {
     _wifiPassword = defaultWifiPassword();
